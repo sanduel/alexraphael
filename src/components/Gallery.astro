@@ -1,0 +1,28 @@
+---
+import { Image } from "astro:assets";
+import stainedGlass from "../assets/alex-stained-glass.jpg";
+import columns from "../assets/tour-columns.jpg";
+---
+
+<section class="px-6 py-16 md:py-24 border-t border-ink/10">
+  <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-6 md:gap-8">
+    <figure>
+      <Image
+        src={columns}
+        alt="A tour group framed between columns of a portico, looking out at a Manhattan tenement"
+        widths={[400, 800, 1200, 1800]}
+        sizes="(max-width: 768px) 100vw, 50vw"
+        class="w-full h-auto rounded-sm"
+      />
+    </figure>
+    <figure>
+      <Image
+        src={stainedGlass}
+        alt="Alex pointing at a stained-glass window in a stone building during a tour"
+        widths={[400, 800, 1200, 1800]}
+        sizes="(max-width: 768px) 100vw, 50vw"
+        class="w-full h-auto rounded-sm"
+      />
+    </figure>
+  </div>
+</section>
