@@ -1,9 +1,18 @@
 ---
 import Base from "../layouts/Base.astro";
+import Hero from "../components/Hero.astro";
+import About from "../components/About.astro";
+import UpcomingTours from "../components/UpcomingTours.astro";
+import SignupForm from "../components/SignupForm.astro";
+import Footer from "../components/Footer.astro";
 ---
 
 <Base title="Alex Raphael — NYC Walking Tours">
-  <main class="min-h-screen flex items-center justify-center px-6">
-    <h1 class="text-6xl md:text-8xl">Alex Raphael</h1>
+  <main>
+    <Hero />
+    <About />
+    <UpcomingTours />
+    <SignupForm />
   </main>
+  <Footer />
 </Base>

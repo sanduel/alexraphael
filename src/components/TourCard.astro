@@ -1,0 +1,42 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  tour: CollectionEntry<"tours">;
+}
+
+const { tour } = Astro.props;
+const { title, date, duration, meetingPoint, bookingUrl } = tour.data;
+
+const dateLabel = new Intl.DateTimeFormat("en-US", {
+  weekday: "short",
+  month: "short",
+  day: "numeric",
+  hour: "numeric",
+  minute: "2-digit",
+  timeZone: "America/New_York",
+}).format(date);
+---
+
+<article class="border border-[--color-ink]/15 rounded-sm p-6 md:p-7 bg-white/40 flex flex-col gap-3">
+  <p class="text-xs uppercase tracking-[0.18em] text-[--color-ink]/60">
+    {dateLabel}
+  </p>
+  <h3 class="text-2xl md:text-3xl leading-tight">{title}</h3>
+  <p class="text-sm text-[--color-ink]/70">
+    {duration} · meets at {meetingPoint}
+  </p>
+  {
+    bookingUrl && (
+      <a
+        href={bookingUrl}
+        target="_blank"
+        rel="noopener"
+        class="mt-2 inline-flex items-center gap-2 text-sm uppercase tracking-[0.18em] text-[--color-accent] hover:opacity-70 transition self-start"
+      >
+        <span>Book this tour</span>
+        <span aria-hidden="true">→</span>
+      </a>
+    )
+  }
+</article>
