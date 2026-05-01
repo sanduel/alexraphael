@@ -1,6 +1,6 @@
 ---
-// TODO: replace the placeholder below with the Loops embed snippet
-// from Loops → Forms → your form → Embed.
+// Loops embed — form ID is hard-coded in the action URL below.
+// To regenerate: Loops → Forms → your form → Embed.
 ---
 
 <section id="signup" class="px-6 py-16 md:py-24 border-t border-ink/10">
@@ -10,10 +10,177 @@
       Occasional emails about upcoming tours. No spam.
     </p>
 
-    <div
-      class="mt-10 rounded-sm border border-dashed border-ink/30 p-8 text-sm text-ink/55"
-    >
-      Loops form embed coming soon.
+    <div class="newsletter-form-container mt-10 flex flex-col items-center">
+      <form
+        class="newsletter-form"
+        action="https://app.loops.so/api/newsletter-form/cmom22oha0agt0iybr64lgr5f"
+        method="POST"
+        style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;"
+      >
+        <input
+          class="newsletter-form-input"
+          placeholder="you@example.com"
+          required
+          type="email"
+          name="newsletter-form-input"
+          style="font-family:Inter,sans-serif;color:#1a1a1a;font-size:15px;margin:0 0 12px;width:100%;max-width:360px;background:#ffffff;border:1px solid rgba(26,26,26,0.18);box-sizing:border-box;border-radius:4px;padding:10px 14px;"
+        />
+        <button
+          type="submit"
+          class="newsletter-form-button"
+          style="background:#b04a3a;font-size:13px;color:#faf7f2;font-family:Inter,sans-serif;display:flex;width:100%;max-width:360px;height:42px;align-items:center;justify-content:center;padding:9px 17px;border-radius:4px;text-align:center;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;line-height:20px;border:none;cursor:pointer;transition:background 0.15s;"
+          onmouseover="this.style.background='#1a1a1a'"
+          onmouseout="this.style.background='#b04a3a'"
+        >
+          Get updates
+        </button>
+        <button
+          type="button"
+          class="newsletter-loading-button"
+          style="background:#b04a3a;font-size:13px;color:#faf7f2;font-family:Inter,sans-serif;display:none;width:100%;max-width:360px;height:42px;align-items:center;justify-content:center;padding:9px 17px;border-radius:4px;text-align:center;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;line-height:20px;border:none;cursor:pointer;"
+        >
+          Please wait…
+        </button>
+      </form>
+      <div
+        class="newsletter-success"
+        style="display:none;align-items:center;justify-content:center;width:100%;"
+      >
+        <p
+          class="newsletter-success-message"
+          style="font-family:Inter,sans-serif;color:#1a1a1a;font-size:15px;"
+        >
+          Thanks — you'll hear from Alex when the next tour drops.
+        </p>
+      </div>
+      <div
+        class="newsletter-error"
+        style="display:none;align-items:center;justify-content:center;width:100%;"
+      >
+        <p
+          class="newsletter-error-message"
+          style="font-family:Inter,sans-serif;color:#b91c1c;font-size:15px;"
+        >
+          Something went wrong — please try again.
+        </p>
+      </div>
+      <button
+        class="newsletter-back-button"
+        type="button"
+        style="color:rgba(26,26,26,0.55);font:14px Inter,sans-serif;margin:12px auto 0;text-align:center;display:none;background:transparent;border:none;cursor:pointer;"
+        onmouseover="this.style.textDecoration='underline'"
+        onmouseout="this.style.textDecoration='none'"
+      >
+        &larr; Back
+      </button>
     </div>
   </div>
 </section>
+
+<script is:inline>
+  function submitHandler(event) {
+    event.preventDefault();
+    var container = event.target.parentNode;
+    var form = container.querySelector(".newsletter-form");
+    var formInput = container.querySelector(".newsletter-form-input");
+    var success = container.querySelector(".newsletter-success");
+    var errorContainer = container.querySelector(".newsletter-error");
+    var errorMessage = container.querySelector(".newsletter-error-message");
+    var backButton = container.querySelector(".newsletter-back-button");
+    var submitButton = container.querySelector(".newsletter-form-button");
+    var loadingButton = container.querySelector(".newsletter-loading-button");
+
+    var rateLimit = function () {
+      errorContainer.style.display = "flex";
+      errorMessage.innerText =
+        "Too many signups, please try again in a little while.";
+      submitButton.style.display = "none";
+      formInput.style.display = "none";
+      backButton.style.display = "block";
+    };
+
+    var time = new Date();
+    var timestamp = time.valueOf();
+    var previousTimestamp = localStorage.getItem("loops-form-timestamp");
+    if (previousTimestamp && Number(previousTimestamp) + 60000 > timestamp) {
+      rateLimit();
+      return;
+    }
+    localStorage.setItem("loops-form-timestamp", timestamp);
+
+    submitButton.style.display = "none";
+    loadingButton.style.display = "flex";
+
+    var formBody =
+      "userGroup=&mailingLists=&email=" + encodeURIComponent(formInput.value);
+
+    fetch(event.target.action, {
+      method: "POST",
+      body: formBody,
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    })
+      .then(function (res) {
+        return [res.ok, res.json(), res];
+      })
+      .then(function (parts) {
+        var ok = parts[0],
+          dataPromise = parts[1],
+          res = parts[2];
+        if (ok) {
+          success.style.display = "flex";
+          form.reset();
+        } else {
+          dataPromise.then(function (data) {
+            errorContainer.style.display = "flex";
+            errorMessage.innerText = data.message ? data.message : res.statusText;
+          });
+        }
+      })
+      .catch(function (error) {
+        if (error.message === "Failed to fetch") {
+          rateLimit();
+          return;
+        }
+        errorContainer.style.display = "flex";
+        if (error.message) errorMessage.innerText = error.message;
+        localStorage.setItem("loops-form-timestamp", "");
+      })
+      .finally(function () {
+        formInput.style.display = "none";
+        loadingButton.style.display = "none";
+        backButton.style.display = "block";
+      });
+  }
+
+  function resetFormHandler(event) {
+    var container = event.target.parentNode;
+    var formInput = container.querySelector(".newsletter-form-input");
+    var success = container.querySelector(".newsletter-success");
+    var errorContainer = container.querySelector(".newsletter-error");
+    var errorMessage = container.querySelector(".newsletter-error-message");
+    var backButton = container.querySelector(".newsletter-back-button");
+    var submitButton = container.querySelector(".newsletter-form-button");
+
+    success.style.display = "none";
+    errorContainer.style.display = "none";
+    errorMessage.innerText = "Something went wrong — please try again.";
+    backButton.style.display = "none";
+    formInput.style.display = "flex";
+    submitButton.style.display = "flex";
+  }
+
+  var formContainers = document.getElementsByClassName(
+    "newsletter-form-container"
+  );
+  for (var i = 0; i < formContainers.length; i++) {
+    var formContainer = formContainers[i];
+    if (formContainer.classList.contains("newsletter-handlers-added")) continue;
+    formContainer
+      .querySelector(".newsletter-form")
+      .addEventListener("submit", submitHandler);
+    formContainer
+      .querySelector(".newsletter-back-button")
+      .addEventListener("click", resetFormHandler);
+    formContainer.classList.add("newsletter-handlers-added");
+  }
+</script>
