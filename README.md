@@ -1,6 +1,6 @@
 # alexraphael.com
 
-Walking tours of New York's layered history, by Alex Raphael.
+Walking tours of New York's layered history, by Alex Raphaël.
 
 Static site built with Astro, Tailwind v4, and content collections for tour markdown. Deploys to Cloudflare Pages on every push to `main`.
 
