@@ -1,43 +1,61 @@
-# Astro Starter Kit: Minimal
+# alexraphael.com
+
+Walking tours of New York's layered history, by Alex Raphael.
+
+Static site built with Astro, Tailwind v4, and content collections for tour markdown. Deploys to Cloudflare Pages on every push to `main`.
+
+## Local development
 
 ```sh
-npm create astro@latest -- --template minimal
+npm install
+npm run dev    # http://localhost:4321
+npm run build  # production build to ./dist/
+npm test       # vitest
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Adding an upcoming tour
 
-## 🚀 Project Structure
+Create a new file in `src/content/tours/<slug>.md`:
 
-Inside of your Astro project, you'll see the following folders and files:
+```markdown
+---
+title: "Your tour title"
+date: 2026-06-14T14:00:00-04:00
+duration: "2 hours"
+meetingPoint: "Washington Square Arch"
+bookingUrl: "https://www.eventbrite.com/e/..."
+status: "upcoming"
+---
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+A paragraph describing the tour.
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+`status` is one of `upcoming`, `sold-out`, or `past`. Only `upcoming` tours appear on the site, sorted by date ascending. Push to `main` and Cloudflare auto-deploys.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+You can edit and create these files directly in the GitHub web UI — no local dev needed.
 
-Any static assets, like images, can be placed in the `public/` directory.
+## Swapping in the Loops form
 
-## 🧞 Commands
+The signup section (`src/components/SignupForm.astro`) currently shows a placeholder. To wire up Loops:
 
-All commands are run from the root of the project, from a terminal:
+1. In Loops → Forms → your form → **Embed**, copy the snippet.
+2. Replace the placeholder `<div>` in `SignupForm.astro` with the snippet.
+3. Commit and push.
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+## Changing the accent color
 
-## 👀 Want to learn more?
+The brick-red accent is defined in `src/styles/global.css` under `@theme`:
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+```css
+--color-accent: #b04a3a;
+```
+
+Change the hex, save, and the site rebuilds.
+
+## Deploy
+
+Cloudflare Pages is connected to this repo. Every push to `main` triggers a build (`npm run build` → `dist/`). The site is served at `alexraphael.com`.
+
+## Tests
+
+`npm test` runs the Vitest suite. Currently covers `selectUpcomingTours()` — the function that filters and sorts tour entries for the Upcoming Tours section.
