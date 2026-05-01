@@ -1,0 +1,29 @@
+---
+const links = [
+  { href: "#about", label: "About", mobile: false },
+  { href: "#tours", label: "Tours", mobile: true },
+  { href: "#signup", label: "Sign up", mobile: true },
+];
+---
+
+<nav class="border-b border-ink/10">
+  <div class="max-w-6xl mx-auto px-4 md:px-6 h-14 flex items-center justify-between gap-4">
+    <a
+      href="/"
+      class="font-serif text-sm md:text-base tracking-tight text-ink/85 hover:text-ink transition shrink-0"
+    >
+      alex raphaël
+    </a>
+    <ul class="flex items-center gap-5 md:gap-8 text-[11px] md:text-xs uppercase tracking-[0.16em] md:tracking-[0.18em] text-ink/65 whitespace-nowrap">
+      {
+        links.map((l) => (
+          <li class={l.mobile ? "" : "hidden sm:block"}>
+            <a href={l.href} class="hover:text-accent transition">
+              {l.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</nav>
