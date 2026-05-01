@@ -18,12 +18,12 @@ const dateLabel = new Intl.DateTimeFormat("en-US", {
 }).format(date);
 ---
 
-<article class="border border-[--color-ink]/15 rounded-sm p-6 md:p-7 bg-white/40 flex flex-col gap-3">
-  <p class="text-xs uppercase tracking-[0.18em] text-[--color-ink]/60">
+<article class="border border-ink/15 rounded-sm p-6 md:p-7 bg-white/40 flex flex-col gap-3">
+  <p class="text-xs uppercase tracking-[0.18em] text-ink/60">
     {dateLabel}
   </p>
   <h3 class="text-2xl md:text-3xl leading-tight">{title}</h3>
-  <p class="text-sm text-[--color-ink]/70">
+  <p class="text-sm text-ink/70">
     {duration} · meets at {meetingPoint}
   </p>
   {
@@ -32,7 +32,7 @@ const dateLabel = new Intl.DateTimeFormat("en-US", {
         href={bookingUrl}
         target="_blank"
         rel="noopener"
-        class="mt-2 inline-flex items-center gap-2 text-sm uppercase tracking-[0.18em] text-[--color-accent] hover:opacity-70 transition self-start"
+        class="mt-4 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-sm bg-accent text-bg text-sm font-medium uppercase tracking-[0.15em] hover:bg-ink transition self-start"
       >
         <span>Book this tour</span>
         <span aria-hidden="true">→</span>

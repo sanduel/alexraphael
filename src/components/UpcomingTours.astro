@@ -7,13 +7,13 @@ const all = await getCollection("tours");
 const upcoming = selectUpcomingTours(all);
 ---
 
-<section class="px-6 py-16 md:py-24 border-t border-[--color-ink]/10">
+<section class="px-6 py-16 md:py-24 border-t border-ink/10">
   <div class="max-w-5xl mx-auto">
     <h2 class="text-3xl md:text-5xl mb-10 md:mb-14">Upcoming tours</h2>
 
     {
       upcoming.length === 0 ? (
-        <p class="text-lg text-[--color-ink]/60 italic max-w-prose">
+        <p class="text-lg text-ink/60 italic max-w-prose">
           No tours scheduled — sign up below to hear when the next one drops.
         </p>
       ) : (
